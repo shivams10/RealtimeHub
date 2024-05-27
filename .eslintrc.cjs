@@ -30,6 +30,7 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-confusing-void-expression': ['error', { ignoreArrowShorthand: true }],
     '@typescript-eslint/triple-slash-reference': 'off',
+    "@typescript-eslint/strict-boolean-expressions": "off"
   },
   settings: {
     react: {
