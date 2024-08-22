@@ -9,6 +9,7 @@ The following tools are used:
 - Eslint: testing the static code
 - Prettier: format the code
 - Husky: execute eslint and prettier before every commit
+- **Note**: commit message should follow [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) else husky will throw error
 - Path alias for file import
 - Basic test cases with [Vitest](https://vitest.dev/) and [react-testing-library](https://testing-library.com/docs/react-testing-library/intro/)
 - github pipeline workflow
@@ -20,7 +21,7 @@ Get your project up and running with the following steps:
 ## Prerequisite
 
 1. Node
-2. Yarn
+2. NPM
 
 ## Setup
 
@@ -33,21 +34,21 @@ Get your project up and running with the following steps:
 2. Install NPM packages
 
    ```sh
-   yarn
+   npm
    ```
 
 3. Run development server
 
    ```sh
-   yarn run dev
+   npm run dev
    ```
 
 ### Development
 
-- `yarn run dev` to monitor src folder for changes, and mount current code at `localhost:5173`.
-- `yarn run lint` to run full linter.
-- `yarn run format` to format code.
-- `yarn run build` generates a production-ready bundle.
+- `npm run dev` to monitor src folder for changes, and mount current code at `localhost:5173`.
+- `npm run lint` to run full linter.
+- `npm run format` to format code.
+- `npm run build` generates a production-ready bundle.
 
 > **Note**  
-> Run `yarn run prepare` once you have set up your project to enable Husky to execute Eslint and Prettier before every commit.
+> Run `npm run prepare` once you have set up your project to enable Husky to execute Eslint and Prettier before every commit.
