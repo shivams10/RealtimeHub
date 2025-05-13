@@ -1,8 +1,11 @@
 import { useState } from 'react';
+
+import type { Title } from 'types/index';
+
 import reactLogo from 'assets/react.svg';
 import viteLogo from 'assets/vite.svg';
+
 import './App.css';
-import type { Title } from 'types/index';
 
 const initialData: Title = {
   title: 'GKMIT React Boilerplate',

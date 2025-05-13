@@ -1,6 +1,8 @@
-import App from '#/App';
-import { render, screen, userEvent } from 'utils/test-utils';
 import { describe, it } from 'vitest';
+
+import App from '#/App';
+
+import { render, screen, userEvent } from 'utils/test-utils';
 
 // Tests
 describe('Renders main page correctly', async () => {
