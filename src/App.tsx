@@ -1,39 +1,21 @@
-import { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import type { Title } from 'types/index';
-
-import reactLogo from 'assets/react.svg';
-import viteLogo from 'assets/vite.svg';
-
-import './App.css';
-
-const initialData: Title = {
-  title: 'GKMIT React Boilerplate',
-};
+import Home from './pages/home';
+import Polling from './pages/polling';
+import ServerSent from './pages/server-sent';
+import WebSocket from './pages/web-socket';
 
 function App() {
-  const [count, setCount] = useState(0);
-  const { title } = initialData;
-
   return (
-    <>
-      <div>
-        <a href='https://vitejs.dev' rel='noreferrer' target='_blank'>
-          <img src={viteLogo} className='logo' alt='Vite logo' />
-        </a>
-        <a href='https://react.dev' rel='noreferrer' target='_blank'>
-          <img src={reactLogo} className='logo react' alt='React logo' />
-        </a>
-      </div>
-      <h1>{title}</h1>
-      <div className='card'>
-        <button onClick={() => setCount(count => count + 1)}>count is {count}</button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className='read-the-docs'>Click on the Vite and React logos to learn more</p>
-    </>
+    <Router>
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/polling' element={<Polling />} />
+        <Route path='/web-socket' element={<WebSocket />} />
+        <Route path='/server-sent' element={<ServerSent />} />
+      </Routes>
+    </Router>
   );
 }
+
 export default App;
