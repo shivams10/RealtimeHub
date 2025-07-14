@@ -9,9 +9,9 @@ function ChatApp() {
     name: '',
     email: '',
   });
-  const [messages, setMessages] = useState<Array<{ from: string; message: string; timestamp: string }>>(
-    [],
-  );
+  const [messages, setMessages] = useState<
+    Array<{ from: string; message: string; timestamp: string }>
+  >([]);
   const [text, setText] = useState('');
   const username = localStorage.getItem('username') ?? '';
 
@@ -90,24 +90,27 @@ function ChatApp() {
       <div style={styles.sidebar}>
         <h3 style={styles.sidebarHeader}>Contacts</h3>
         <div style={styles.sidebarContent}>
-          <ul style={styles.contactsList}>
-            {(users ?? [])
-              .filter(u => u.email !== username)
-              .map(u => (
-                <li
-                  key={u?.email}
-                  onClick={() => setSelectedUser(u)}
-                  style={
-                    selectedUser.email === u.email
-                      ? styles.contactItemSelected
-                      : styles.contactItemUnselected
-                  }
-                >
-                  <span>{u.name}</span>
-                </li>
-              ))}
-          </ul>
-
+          {users?.length ? (
+            <ul style={styles.contactsList}>
+              {(users ?? [])
+                .filter(u => u.email !== username)
+                .map(u => (
+                  <li
+                    key={u?.email}
+                    onClick={() => setSelectedUser(u)}
+                    style={
+                      selectedUser.email === u.email
+                        ? styles.contactItemSelected
+                        : styles.contactItemUnselected
+                    }
+                  >
+                    <span>{u.name}</span>
+                  </li>
+                ))}
+            </ul>
+          ) : (
+            <div style={styles.placeholder}>No active users.</div>
+          )}
           <div style={styles.userProfile}>
             <div style={styles.userAvatar}>
               {loggedInUserDisplayName
