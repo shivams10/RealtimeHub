@@ -4,11 +4,13 @@ import { socket } from '../socket';
 
 function ChatApp() {
   const [loggedInUserDisplayName, setLoggedInUserDisplayName] = useState('');
-  const [users, setUsers] = useState<Array<{ name: ''; email: '' }>>();
-  const [selectedUser, setSelectedUser] = useState<{ name: ''; email: '' }>({
-    name: '',
-    email: '',
-  });
+  const [users, setUsers] = useState<Array<{ name: string; email: string; online: boolean }>>([]);
+  const [selectedUser, setSelectedUser] = useState<{
+    name: string;
+    email: string;
+    online: boolean;
+  }>({ name: '', email: '', online: false });
+
   const [messages, setMessages] = useState<
     Array<{ from: string; message: string; timestamp: string }>
   >([]);
@@ -20,9 +22,10 @@ function ChatApp() {
       console.error('Username not found in localStorage');
       return;
     } else {
-      const loggedIn = users?.find(user => user.email === username);
+      const loggedIn = users.find(user => user.email === username);
       setLoggedInUserDisplayName(loggedIn?.name ?? '');
     }
+
     return () => {
       localStorage.removeItem('name');
     };
@@ -30,7 +33,7 @@ function ChatApp() {
 
   const getChatHistory = async (user1: string, user2: string) => {
     try {
-      const token = localStorage.getItem('authToken') ?? ''; // Or use a different storage if applicable
+      const token = localStorage.getItem('authToken') ?? '';
 
       const response = await fetch(
         `http://localhost:3000/chat/history?user1=${encodeURIComponent(
@@ -57,7 +60,6 @@ function ChatApp() {
 
   useEffect(() => {
     socket.on('users', userList => {
-      console.log(userList, username);
       setUsers(userList);
     });
 
@@ -90,27 +92,34 @@ function ChatApp() {
       <div style={styles.sidebar}>
         <h3 style={styles.sidebarHeader}>Contacts</h3>
         <div style={styles.sidebarContent}>
-          {users?.length ? (
+          {users.length ? (
             <ul style={styles.contactsList}>
-              {(users ?? [])
-                .filter(u => u.email !== username)
-                .map(u => (
+              {users
+                .filter(user => user.email !== username)
+                .map(user => (
                   <li
-                    key={u?.email}
-                    onClick={() => setSelectedUser(u)}
+                    key={user.email}
+                    onClick={() => setSelectedUser(user)}
                     style={
-                      selectedUser.email === u.email
+                      selectedUser.email === user.email
                         ? styles.contactItemSelected
                         : styles.contactItemUnselected
                     }
                   >
-                    <span>{u.name}</span>
+                    <span
+                      style={{
+                        ...styles.statusDot,
+                        backgroundColor: user.online ? 'green' : 'gray',
+                      }}
+                    />
+                    {user.name}
                   </li>
                 ))}
             </ul>
           ) : (
             <div style={styles.placeholder}>No active users.</div>
           )}
+
           <div style={styles.userProfile}>
             <div style={styles.userAvatar}>
               {loggedInUserDisplayName
@@ -193,17 +202,6 @@ const styles: any = {
     padding: 0,
     flexGrow: 1,
   },
-  contactItem: {
-    padding: '10px',
-    marginBottom: '8px',
-    backgroundColor: '#111',
-    borderRadius: '5px',
-    cursor: 'pointer',
-    color: '#fff',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
   contactItemSelected: {
     padding: '10px',
     marginBottom: '8px',
@@ -212,8 +210,8 @@ const styles: any = {
     cursor: 'pointer',
     color: '#fff',
     display: 'flex',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    gap: '8px',
     border: '2px solid #4caf50',
   },
   contactItemUnselected: {
@@ -224,9 +222,15 @@ const styles: any = {
     cursor: 'pointer',
     color: '#fff',
     display: 'flex',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    gap: '8px',
     border: '2px solid transparent',
+  },
+  statusDot: {
+    display: 'inline-block',
+    width: '10px',
+    height: '10px',
+    borderRadius: '50%',
   },
   userProfile: {
     display: 'flex',
