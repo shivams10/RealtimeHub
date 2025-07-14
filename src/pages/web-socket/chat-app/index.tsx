@@ -143,7 +143,11 @@ function ChatApp() {
                 <div key={i} style={m.from === username ? styles.messageOwn : styles.messageOther}>
                   <div style={styles.messageText}>{m.message}</div>
                   <div style={styles.messageTimestamp}>
-                    {new Date(m.timestamp).toLocaleTimeString()}
+                    {new Date(m.timestamp).toLocaleTimeString([], {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      hour12: true,
+                    })}
                   </div>
                 </div>
               ))}
