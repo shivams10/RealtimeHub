@@ -1,8 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import styles from './styles';
 import { socket } from '../socket';
 
+const API_URL: string = import.meta.env.VITE_API_URL;
+if (!API_URL) {
+  throw new Error('API_URL is not defined in environment variables');
+}
 function ChatApp() {
   const [loggedInUserDisplayName, setLoggedInUserDisplayName] = useState('');
   const [users, setUsers] = useState<Array<{ name: string; email: string; online: boolean }>>([]);
@@ -38,9 +43,9 @@ function ChatApp() {
       const token = localStorage.getItem('authToken') ?? '';
 
       const response = await fetch(
-        `http://localhost:3000/chat/history?user1=${encodeURIComponent(
-          user1,
-        )}&user2=${encodeURIComponent(user2)}`,
+        `${API_URL}/chat/history?user1=${encodeURIComponent(user1)}&user2=${encodeURIComponent(
+          user2,
+        )}`,
         {
           method: 'GET',
           headers: {
@@ -204,152 +209,3 @@ function ChatApp() {
 }
 
 export default ChatApp;
-
-const styles: any = {
-  container: {
-    display: 'flex',
-    height: '100vh',
-    fontFamily: 'Arial',
-  },
-  sidebar: {
-    width: '15vw',
-    borderRight: '1px solid #ccc',
-    backgroundColor: '#000',
-    color: '#fff',
-    padding: '1rem',
-    overflowY: 'auto',
-  },
-  sidebarHeader: {
-    color: '#fff',
-  },
-  sidebarContent: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '85vh',
-  },
-  contactsList: {
-    listStyle: 'none',
-    padding: 0,
-    flexGrow: 1,
-  },
-  contactItemSelected: {
-    padding: '10px',
-    marginBottom: '8px',
-    backgroundColor: '#111',
-    borderRadius: '5px',
-    cursor: 'pointer',
-    color: '#fff',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '8px',
-    border: '2px solid #4caf50',
-  },
-  contactItemUnselected: {
-    padding: '10px',
-    marginBottom: '8px',
-    backgroundColor: '#111',
-    borderRadius: '5px',
-    cursor: 'pointer',
-    color: '#fff',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '8px',
-    border: '2px solid transparent',
-  },
-  statusDot: {
-    display: 'inline-block',
-    width: '10px',
-    height: '10px',
-    borderRadius: '50%',
-  },
-  userProfile: {
-    display: 'flex',
-    position: 'relative',
-    paddingTop: '1rem',
-  },
-  userAvatar: {
-    backgroundColor: '#4caf50',
-    color: 'white',
-    borderRadius: '50%',
-    width: '40px',
-    height: '40px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: '1rem',
-    fontWeight: 'bold',
-  },
-  userName: {
-    marginTop: '8px',
-    marginLeft: '16px',
-  },
-  logoutOption: {
-    padding: '12px 16px',
-    color: '#fff',
-    cursor: 'pointer',
-    borderRadius: '5px',
-    transition: 'background-color 0.2s',
-    display: 'flex',
-    alignItems: 'center',
-    ':hover': {
-      backgroundColor: '#333',
-    },
-  },
-  chatArea: {
-    width: '70vw',
-    padding: '1rem',
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  messagesContainer: {
-    flex: 1,
-    overflowY: 'auto',
-    margin: '1rem 0',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '10px',
-  },
-  messageOwn: {
-    alignSelf: 'flex-end',
-    backgroundColor: '#dcf8c6',
-    padding: '10px 15px',
-    borderRadius: '10px',
-    maxWidth: '60%',
-    color: 'black',
-    boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
-  },
-  messageOther: {
-    alignSelf: 'flex-start',
-    backgroundColor: '#f1f0f0',
-    padding: '10px 15px',
-    borderRadius: '10px',
-    maxWidth: '60%',
-    color: 'black',
-    boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
-  },
-  messageText: {
-    fontSize: '0.9rem',
-  },
-  messageTimestamp: {
-    fontSize: '0.7rem',
-    textAlign: 'right',
-    marginTop: '5px',
-  },
-  inputContainer: {
-    display: 'flex',
-    gap: '10px',
-  },
-  messageInput: {
-    flex: 1,
-    padding: '10px',
-    borderRadius: '20px',
-    border: '1px solid #ccc',
-  },
-  sendButton: {
-    padding: '10px 20px',
-  },
-  placeholder: {
-    margin: 'auto',
-    fontSize: '1.2rem',
-  },
-};
