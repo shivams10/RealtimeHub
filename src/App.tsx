@@ -5,7 +5,8 @@ import LoginPage from './pages/login';
 import Polling from './pages/polling';
 import ServerSent from './pages/server-sent';
 import WebSocket from './pages/web-socket';
-import PrivateRoute from './private.route';
+import PrivateRoute from './routes/private';
+import PublicRoute from './routes/public';
 
 function App() {
   return (
@@ -13,7 +14,14 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/polling' element={<Polling />} />
-        <Route path='/login' element={<LoginPage />} />
+        <Route
+          path='/login'
+          element={
+            <PublicRoute>
+              <LoginPage />
+            </PublicRoute>
+          }
+        />
         <Route path='/server-sent' element={<ServerSent />} />
 
         <Route

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { socket } from '../socket';
 
@@ -15,6 +16,7 @@ function ChatApp() {
     Array<{ from: string; message: string; timestamp: string }>
   >([]);
   const [text, setText] = useState('');
+  const navigate = useNavigate();
   const username = localStorage.getItem('username') ?? '';
 
   useEffect(() => {
@@ -87,6 +89,14 @@ function ChatApp() {
     setText('');
   };
 
+  const handleLogout = () => {
+    void navigate('/login');
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('username');
+    localStorage.removeItem('name');
+    socket.disconnect();
+  };
+
   return (
     <div style={styles.container}>
       <div style={styles.sidebar}>
@@ -130,6 +140,22 @@ function ChatApp() {
                 .toUpperCase()}
             </div>
             <div style={styles.userName}>{loggedInUserDisplayName}</div>
+            <div style={styles.logoutOption} onClick={handleLogout}>
+              <svg
+                width='16'
+                height='16'
+                viewBox='0 0 24 24'
+                fill='none'
+                stroke='currentColor'
+                strokeWidth='2'
+                strokeLinecap='round'
+                strokeLinejoin='round'
+              >
+                <path d='M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4'></path>
+                <polyline points='16,17 21,12 16,7'></polyline>
+                <line x1='21' y1='12' x2='9' y2='12'></line>
+              </svg>
+            </div>
           </div>
         </div>
       </div>
@@ -238,6 +264,7 @@ const styles: any = {
   },
   userProfile: {
     display: 'flex',
+    position: 'relative',
     paddingTop: '1rem',
   },
   userAvatar: {
@@ -255,6 +282,18 @@ const styles: any = {
   userName: {
     marginTop: '8px',
     marginLeft: '16px',
+  },
+  logoutOption: {
+    padding: '12px 16px',
+    color: '#fff',
+    cursor: 'pointer',
+    borderRadius: '5px',
+    transition: 'background-color 0.2s',
+    display: 'flex',
+    alignItems: 'center',
+    ':hover': {
+      backgroundColor: '#333',
+    },
   },
   chatArea: {
     width: '70vw',
