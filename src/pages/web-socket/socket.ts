@@ -8,4 +8,7 @@ export const socket = io(API_URL, {
     token,
   },
   transports: ['websocket'], // optional, but helps avoid polling
+  reconnection: true,
+  reconnectionAttempts: 5,
+  reconnectionDelay: 1000,
 });
