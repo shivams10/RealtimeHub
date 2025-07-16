@@ -28,6 +28,7 @@ function ChatApp() {
   useEffect(() => {
     if (!username) {
       console.error('Username not found in localStorage');
+      void navigate('/login');
       return;
     } else {
       const loggedIn = users.find(user => user.email === username);
@@ -79,11 +80,9 @@ function ChatApp() {
   };
 
   const handleLogout = () => {
-    void navigate('/login');
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('username');
-    localStorage.removeItem('name');
+    localStorage.clear();
     socket.disconnect();
+    void navigate('/login');
   };
 
   return (

@@ -19,14 +19,20 @@ function LoginPage() {
     try {
       const data = await login(email, password);
       setToken(data.token);
+
+      // Store all necessary user data in localStorage
       localStorage.setItem('authToken', data.token);
-      void navigate('/web-socket');
+
+      // Navigate to web-socket page
       setTimeout(() => {
+        void navigate('/web-socket');
         setIsLoading(false);
       }, 1000);
     } catch (err: any) {
       localStorage.removeItem('username');
-      setError(err.message);
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('name');
+      setError(err.message || 'Login failed. Please try again.');
       setIsLoading(false);
     }
   };
@@ -45,6 +51,12 @@ function LoginPage() {
       ...(isLoading ? styles.buttonLoading : {}),
       ...(!email || !password ? styles.buttonDisabled : {}),
     };
+  };
+
+  const onKeyDown = async (e: any) => {
+    if (e.key === 'Enter' && email && password) {
+      await handleLogin();
+    }
   };
 
   return (
@@ -79,6 +91,7 @@ function LoginPage() {
               onFocus={() => setFocusedInput('email')}
               onBlur={() => setFocusedInput('')}
               disabled={isLoading}
+              onKeyDown={onKeyDown}
             />
           </div>
 
@@ -93,6 +106,7 @@ function LoginPage() {
               onFocus={() => setFocusedInput('password')}
               onBlur={() => setFocusedInput('')}
               disabled={isLoading}
+              onKeyDown={onKeyDown}
             />
           </div>
 
@@ -135,6 +149,7 @@ function LoginPage() {
               </svg>
               <div>
                 <p style={styles.successTitle}>Login Successful!</p>
+                <p style={styles.successText}>Redirecting to chat...</p>
               </div>
             </div>
           )}
@@ -312,7 +327,6 @@ const styles: Record<string, React.CSSProperties> = {
   },
   successText: {
     margin: '0',
-    wordBreak: 'break-all' as const,
     opacity: 0.8,
   },
 };
