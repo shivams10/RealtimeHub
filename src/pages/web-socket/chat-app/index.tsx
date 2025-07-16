@@ -1,25 +1,26 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { getChatHistoryData } from '#/api/web-socket';
+
 import styles from './styles';
 import { socket } from '../socket';
 
-const API_URL: string = import.meta.env.VITE_API_URL;
-if (!API_URL) {
-  throw new Error('API_URL is not defined in environment variables');
+interface IUser {
+  name: string;
+  email: string;
+  online: boolean;
 }
+
 function ChatApp() {
   const [loggedInUserDisplayName, setLoggedInUserDisplayName] = useState('');
   const [users, setUsers] = useState<Array<{ name: string; email: string; online: boolean }>>([]);
-  const [selectedUser, setSelectedUser] = useState<{
-    name: string;
-    email: string;
-    online: boolean;
-  }>({ name: '', email: '', online: false });
+  const [selectedUser, setSelectedUser] = useState<IUser>({ name: '', email: '', online: false });
 
   const [messages, setMessages] = useState<
     Array<{ from: string; message: string; timestamp: string }>
   >([]);
+
   const [text, setText] = useState('');
   const navigate = useNavigate();
   const username = localStorage.getItem('username') ?? '';
@@ -40,25 +41,8 @@ function ChatApp() {
 
   const getChatHistory = async (user1: string, user2: string) => {
     try {
-      const token = localStorage.getItem('authToken') ?? '';
-
-      const response = await fetch(
-        `${API_URL}/chat/history?user1=${encodeURIComponent(user1)}&user2=${encodeURIComponent(
-          user2,
-        )}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-
-      if (!response.ok) throw new Error('Failed to fetch chat history');
-
-      const data = await response.json();
-      setMessages(data);
+      const chatInfo = await getChatHistoryData(user1, user2);
+      setMessages(chatInfo);
     } catch (error) {
       console.error('Error fetching chat history:', error);
       setMessages([]);

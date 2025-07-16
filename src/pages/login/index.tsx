@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const API_URL: string = import.meta.env.VITE_API_URL;
+import { login } from '#/api/login';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
@@ -17,21 +17,7 @@ function LoginPage() {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`${API_URL}/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (!response.ok) {
-        const resData = await response.json();
-        throw new Error(resData.message || 'Login failed');
-      }
-      localStorage.setItem('username', email);
-
-      const data = await response.json();
+      const data = await login(email, password);
       setToken(data.token);
       localStorage.setItem('authToken', data.token);
       void navigate('/web-socket');
