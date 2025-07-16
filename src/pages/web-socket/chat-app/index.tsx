@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { type Socket } from 'socket.io-client';
 
 import { getChatHistoryData } from '#/api/web-socket';
 
 import styles from './styles';
-import { socket } from '../socket';
-
+import { connectSocket, disconnectSocket } from '../../../utils/socket';
 interface IUser {
   name: string;
   email: string;
@@ -22,8 +22,22 @@ function ChatApp() {
   >([]);
 
   const [text, setText] = useState('');
+
+  const [socket, setSocket] = useState<Socket>();
+
   const navigate = useNavigate();
   const username = localStorage.getItem('username') ?? '';
+
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      const socket = connectSocket(token);
+      setSocket(socket);
+    }
+    return () => {
+      disconnectSocket();
+    };
+  }, []);
 
   useEffect(() => {
     if (!username) {
@@ -51,11 +65,11 @@ function ChatApp() {
   };
 
   useEffect(() => {
-    socket.on('users', userList => {
+    socket?.on('users', userList => {
       setUsers(userList);
     });
 
-    socket.on('message', msg => {
+    socket?.on('message', msg => {
       setMessages(prev => [...prev, msg]);
     });
 
@@ -64,14 +78,14 @@ function ChatApp() {
     }
 
     return () => {
-      socket.off('users');
-      socket.off('message');
+      socket?.off('users');
+      socket?.off('message');
     };
-  }, [selectedUser]);
+  }, [socket, selectedUser]);
 
   const sendMessage = () => {
     if (!text.trim()) return;
-    socket.emit('message', {
+    socket?.emit('message', {
       from: username,
       to: selectedUser.email,
       message: text,
@@ -81,7 +95,7 @@ function ChatApp() {
 
   const handleLogout = () => {
     localStorage.clear();
-    socket.disconnect();
+    disconnectSocket();
     void navigate('/login');
   };
 
