@@ -1,46 +1,39 @@
+import { Suspense, lazy } from 'react';
+
+const ChatApp = lazy(async () => await import('./chat-app'));
+
 const WebSocket = () => {
   return (
     <div style={styles.container}>
-      <h1 style={styles.heading}>🛰️ WebSocket Page</h1>
-      <p style={styles.description}>This page simulates web socket.</p>
+      <Suspense
+        fallback={
+          <div style={styles.loaderWrapper}>
+            <div style={styles.loaderText}>Loading chat...</div>
+          </div>
+        }
+      >
+        <ChatApp />
+      </Suspense>
     </div>
   );
 };
 
-const styles = {
+const styles: Record<string, React.CSSProperties> = {
   container: {
-    padding: '3rem',
     fontFamily: 'Arial, sans-serif',
-    backgroundColor: '#eef2f3',
     borderRadius: '8px',
-    marginLeft: '30rem',
+    height: '100vh', // Full screen height
+    width: '100vw', // Full screen width
   },
-  heading: {
-    fontSize: '2.5rem',
-    color: '#2c3e50',
+  loaderWrapper: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
   },
-  description: {
-    fontSize: '1.2rem',
-    margin: '1rem 0 2rem',
-    color: '#34495e',
-  },
-  statusBox: {
-    fontSize: '1.2rem',
-    marginBottom: '1.5rem',
-    padding: '1rem',
-    backgroundColor: '#ffffff',
-    border: '1px solid #ccc',
-    borderRadius: '6px',
-    display: 'inline-block',
-  },
-  button: {
-    padding: '0.8rem 1.5rem',
-    fontSize: '1rem',
-    backgroundColor: '#3498db',
+  loaderText: {
+    fontSize: '1.5rem',
     color: 'white',
-    border: 'none',
-    borderRadius: '6px',
-    cursor: 'pointer',
   },
 };
 
