@@ -18,7 +18,7 @@ export default defineConfig({
       reportOnFailure: true,
     },
   },
-  base: '/RealtimeHub',
+  base: '/RealtimeHub/',
   resolve: {
     alias: {
       '#': path.resolve(__dirname, './src'),
