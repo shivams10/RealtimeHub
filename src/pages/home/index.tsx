@@ -28,11 +28,17 @@ const styles = {
     fontFamily: 'Arial, sans-serif',
     backgroundColor: '#f7f7f7',
     borderRadius: '8px',
-    marginLeft: '20rem',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    maxWidth: 'calc(100% - 16px)',
+    width: 1000,
   },
   heading: {
     fontSize: '2.5rem',
     color: '#333',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    width: 'fit-content',
   },
   buttonGroup: {
     display: 'flex',
