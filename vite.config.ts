@@ -7,6 +7,7 @@ import { defineConfig } from 'vite';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  base: '/RealtimeHub/',
   test: {
     globals: true,
     environment: 'jsdom',
@@ -18,7 +19,6 @@ export default defineConfig({
       reportOnFailure: true,
     },
   },
-  base: '/RealtimeHub/',
   resolve: {
     alias: {
       '#': path.resolve(__dirname, './src'),
