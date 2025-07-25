@@ -16,9 +16,9 @@ function ChatApp() {
   const [loggedInUserDisplayName, setLoggedInUserDisplayName] = useState('');
   const [users, setUsers] = useState<IUser[]>([]);
   const [selectedUser, setSelectedUser] = useState<IUser>({ name: '', email: '', online: false });
-  const [messages, setMessages] = useState<Array<{ from: string; message: string; timestamp: string }>>(
-    [],
-  );
+  const [messages, setMessages] = useState<
+    Array<{ from: string; message: string; timestamp: string }>
+  >([]);
   const [text, setText] = useState('');
   const [socket, setSocket] = useState<Socket>();
   const navigate = useNavigate();

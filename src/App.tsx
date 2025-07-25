@@ -10,7 +10,7 @@ import PublicRoute from './routes/public';
 
 function App() {
   return (
-    <Router>
+    <Router basename='/RealtimeHub'>
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/polling' element={<Polling />} />
