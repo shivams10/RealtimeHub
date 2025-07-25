@@ -3,15 +3,12 @@ import { useNavigate } from 'react-router-dom';
 
 import { login } from '#/api/login';
 
-import { styles, getInputStyle, getButtonStyle } from './styles';
-
 function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [token, setToken] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [focusedInput, setFocusedInput] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = async () => {
@@ -21,11 +18,7 @@ function LoginPage() {
     try {
       const data = await login(email, password);
       setToken(data.token);
-
-      // Store all necessary user data in localStorage
       localStorage.setItem('authToken', data.token);
-
-      // Navigate to web-socket page
       setTimeout(() => {
         void navigate('/web-socket');
         setIsLoading(false);
@@ -37,19 +30,24 @@ function LoginPage() {
     }
   };
 
-  const onKeyDown = async (e: any) => {
+  const onKeyDown = async (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && email && password) {
       await handleLogin();
     }
   };
 
   return (
-    <div style={styles.pageContainer}>
-      <div style={styles.container}>
+    <div className='flex items-center justify-center min-h-screen bg-gradient-to-br from-indigo-500 to-purple-600 px-4'>
+      <div className='w-full max-w-md bg-white/90 backdrop-blur-md border border-white/30 shadow-2xl rounded-2xl p-8'>
         {/* Header */}
-        <div style={styles.header}>
-          <div style={styles.iconContainer}>
-            <svg style={styles.icon} fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+        <div className='text-center mb-8'>
+          <div className='mx-auto flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg mb-4'>
+            <svg
+              className='w-8 h-8 text-white'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
               <path
                 strokeLinecap='round'
                 strokeLinejoin='round'
@@ -58,73 +56,82 @@ function LoginPage() {
               />
             </svg>
           </div>
-          <h1 style={styles.title}>Welcome Back</h1>
-          <p style={styles.subtitle}>Sign in to your account</p>
+          <h1 className='text-2xl font-bold text-gray-900'>Sign in to your account</h1>
         </div>
 
         {/* Form */}
-        <div style={styles.form}>
-          <div style={styles.inputGroup}>
-            <label style={styles.label}>Email Address</label>
+        <div className='space-y-5'>
+          <div>
+            <label className='block text-sm font-medium text-gray-700 mb-1'>Email Address</label>
             <input
-              style={getInputStyle('email', focusedInput, error, email)}
               type='email'
+              className={`w-full text-black bg-white px-4 py-3 border-2 rounded-xl text-sm outline-none transition-all ${
+                error && !email
+                  ? 'border-red-400 ring-1 ring-red-200'
+                  : 'border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100'
+              }`}
               placeholder='Enter your email'
               value={email}
               onChange={e => setEmail(e.target.value)}
-              onFocus={() => setFocusedInput('email')}
-              onBlur={() => setFocusedInput('')}
-              disabled={isLoading}
               onKeyDown={onKeyDown}
+              disabled={isLoading}
             />
           </div>
 
-          <div style={styles.inputGroup}>
-            <label style={styles.label}>Password</label>
+          <div>
+            <label className='block text-sm font-medium text-gray-700 mb-1'>Password</label>
             <input
-              style={getInputStyle('password', focusedInput, error, password)}
               type='password'
+              className={`w-full text-black bg-white px-4 py-3 border-2 rounded-xl text-sm outline-none transition-all ${
+                error && !password
+                  ? 'border-red-400 ring-1 ring-red-200'
+                  : 'border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100'
+              }`}
               placeholder='Enter your password'
               value={password}
               onChange={e => setPassword(e.target.value)}
-              onFocus={() => setFocusedInput('password')}
-              onBlur={() => setFocusedInput('')}
-              disabled={isLoading}
               onKeyDown={onKeyDown}
+              disabled={isLoading}
             />
           </div>
 
           <button
-            style={getButtonStyle(isLoading, email, password)}
+            className={`w-full py-3 text-white font-semibold rounded-xl transition-all flex items-center justify-center gap-2
+              ${
+                isLoading || !email || !password
+                  ? 'bg-indigo-400 opacity-50 cursor-not-allowed'
+                  : 'bg-gradient-to-br from-indigo-500 to-purple-600 hover:brightness-110'
+              }
+            `}
             onClick={handleLogin}
             disabled={isLoading || !email || !password}
           >
             {isLoading ? (
-              <div style={styles.buttonContent}>
-                <div style={styles.spinner}></div>
+              <>
+                <span className='w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin' />
                 Signing in...
-              </div>
+              </>
             ) : (
               'Sign In'
             )}
           </button>
 
           {error && (
-            <div style={styles.errorContainer}>
-              <svg style={styles.errorIcon} fill='currentColor' viewBox='0 0 20 20'>
+            <div className='flex items-center gap-2 p-3 bg-red-100 border border-red-300 rounded-lg text-red-600 text-sm mt-2'>
+              <svg className='w-4 h-4 flex-shrink-0' fill='currentColor' viewBox='0 0 20 20'>
                 <path
                   fillRule='evenodd'
                   d='M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z'
                   clipRule='evenodd'
                 />
               </svg>
-              <span>{error}</span>
+              {error}
             </div>
           )}
 
           {token && (
-            <div style={styles.successContainer}>
-              <svg style={styles.successIcon} fill='currentColor' viewBox='0 0 20 20'>
+            <div className='flex items-start gap-3 p-4 bg-green-100 border border-green-300 rounded-lg text-green-700 text-sm mt-2'>
+              <svg className='w-5 h-5 mt-1 flex-shrink-0' fill='currentColor' viewBox='0 0 20 20'>
                 <path
                   fillRule='evenodd'
                   d='M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z'
@@ -132,8 +139,8 @@ function LoginPage() {
                 />
               </svg>
               <div>
-                <p style={styles.successTitle}>Login Successful!</p>
-                <p style={styles.successText}>Redirecting to chat...</p>
+                <p className='font-semibold mb-1'>Login Successful!</p>
+                <p className='opacity-80'>Redirecting to chat...</p>
               </div>
             </div>
           )}

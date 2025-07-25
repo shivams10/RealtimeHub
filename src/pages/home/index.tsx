@@ -4,56 +4,32 @@ const Home = () => {
   const navigate = useNavigate();
 
   return (
-    <div style={styles.container}>
-      <h1 style={styles.heading}>📊 Welcome to the Real Time Session</h1>
-      <div style={styles.buttonGroup}>
-        <button style={styles.button} onClick={async () => await navigate('/polling')}>
-          Go to Polling Page
-        </button>
-
-        <button style={styles.button} onClick={async () => await navigate('/web-socket')}>
-          Go to WebSocket Page
-        </button>
-        <button style={styles.button} onClick={async () => await navigate('/server-sent')}>
-          Go to Server Sent Page
-        </button>
+    <div className='h-screen w-screen flex items-center justify-center bg-black-400'>
+      <div className='bg-white rounded-xl shadow-md p-10 text-center space-y-6'>
+        <h1 className='text-4xl font-bold text-gray-800'>📊 Welcome to the Real Time Session</h1>
+        <div className='flex gap-4'>
+          <button
+            className='bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600'
+            onClick={async () => await navigate('/polling')}
+          >
+            Go to Polling Page
+          </button>
+          <button
+            className='bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600'
+            onClick={async () => await navigate('/web-socket')}
+          >
+            Go to WebSocket Page
+          </button>
+          <button
+            className='bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600'
+            onClick={async () => await navigate('/server-sent')}
+          >
+            Go to Server Sent Page
+          </button>
+        </div>
       </div>
     </div>
   );
-};
-
-const styles = {
-  container: {
-    padding: '3rem',
-    fontFamily: 'Arial, sans-serif',
-    backgroundColor: '#f7f7f7',
-    borderRadius: '8px',
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    maxWidth: 'calc(100% - 16px)',
-    width: 1000,
-  },
-  heading: {
-    fontSize: '2.5rem',
-    color: '#333',
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    width: 'fit-content',
-  },
-  buttonGroup: {
-    display: 'flex',
-    justifyContent: 'center',
-    gap: '1rem',
-  },
-  button: {
-    marginTop: '2rem',
-    fontSize: '1rem',
-    backgroundColor: '#4CAF50',
-    color: 'white',
-    border: 'none',
-    borderRadius: '6px',
-    cursor: 'pointer',
-  },
 };
 
 export default Home;

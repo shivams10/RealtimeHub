@@ -4,11 +4,11 @@ const ChatApp = lazy(async () => await import('./chat-app'));
 
 const WebSocket = () => {
   return (
-    <div style={styles.container}>
+    <div className='font-sans h-screen w-screen rounded-lg'>
       <Suspense
         fallback={
-          <div style={styles.loaderWrapper}>
-            <div style={styles.loaderText}>Loading chat...</div>
+          <div className='flex items-center justify-center h-full'>
+            <div className='text-white text-2xl'>Loading chat...</div>
           </div>
         }
       >
@@ -16,25 +16,6 @@ const WebSocket = () => {
       </Suspense>
     </div>
   );
-};
-
-const styles: Record<string, React.CSSProperties> = {
-  container: {
-    fontFamily: 'Arial, sans-serif',
-    borderRadius: '8px',
-    height: '100vh', // Full screen height
-    width: '100vw', // Full screen width
-  },
-  loaderWrapper: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100%',
-  },
-  loaderText: {
-    fontSize: '1.5rem',
-    color: 'white',
-  },
 };
 
 export default WebSocket;
