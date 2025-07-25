@@ -7,7 +7,7 @@ import { defineConfig } from 'vite';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/RealtimeHub/',
+  base: '/RealtimeHub',
   test: {
     globals: true,
     environment: 'jsdom',
