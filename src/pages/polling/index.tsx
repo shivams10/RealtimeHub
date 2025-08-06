@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 
+const API_URL: string = import.meta.env.VITE_API_URL;
 interface WeatherData {
   latitude: number;
   longitude: number;
@@ -27,7 +28,7 @@ export default function WeatherApp() {
   useEffect(() => {
     const fetchWeatherData = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api-polling');
+        const response = await fetch(`${API_URL}/api-polling`);
 
         if (!response.ok) {
           throw new Error('Failed to fetch weather data');
