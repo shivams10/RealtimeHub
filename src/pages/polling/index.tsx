@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 
+const API_URL: string = import.meta.env.VITE_API_URL;
 interface WeatherData {
   latitude: number;
   longitude: number;
@@ -27,7 +28,7 @@ export default function WeatherApp() {
   useEffect(() => {
     const fetchWeatherData = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api-polling');
+        const response = await fetch(`${API_URL}/api-polling`);
 
         if (!response.ok) {
           throw new Error('Failed to fetch weather data');
@@ -61,11 +62,15 @@ export default function WeatherApp() {
 
   const formatTime = (timeString: string) => {
     const date = new Date(timeString);
-    return date.toLocaleTimeString('en-US', {
+    const day = date.getDate();
+    const month = date.toLocaleDateString('en-US', { month: 'short' });
+    const year = date.getFullYear().toString().slice(-2);
+    const time = date.toLocaleTimeString('en-US', {
       hour: '2-digit',
       minute: '2-digit',
-      hour12: true,
+      hour12: false,
     });
+    return `${day} ${month} ${year} - ${time}`;
   };
 
   if (loading) {
