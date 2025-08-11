@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 
 import Home from './pages/home';
 import LoginPage from './pages/login';
@@ -10,7 +10,7 @@ import PublicRoute from './routes/public';
 
 function App() {
   return (
-    <Router basename='/RealtimeHub'>
+    <Router>
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/polling' element={<Polling />} />
