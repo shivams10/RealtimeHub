@@ -22,15 +22,15 @@ const Home = () => {
   ];
 
   return (
-    <div className='h-screen w-screen flex bg-gray-100'>
+    <div className='h-screen w-screen flex bg-[#FFF8E8]'>
       {/* Image Section */}
-      <div className='w-3/4 h-full'>
-        <img src={realTimeImg} alt='Real Time' className='h-full w-full object-cover' />
+      <div className='w-3/4 h-full flex justify-center items-center'>
+        <img src={realTimeImg} alt='Real Time' className='h-full w-full object-contain' />
       </div>
 
       {/* Sidebar Section */}
       <div className='w-1/4 h-full flex flex-col items-center bg-[#FFF8E8]'>
-        <h1 className='text-2xl font-bold text-black text-center mt-40 mb-12'>
+        <h1 className='text-2xl font-bold text-black text-center mt-[250px] mb-8'>
           Real Time Communication Approaches
         </h1>
 
@@ -38,7 +38,7 @@ const Home = () => {
           {buttons.map(({ label, path }, index) => (
             <button
               key={path}
-              className={`${buttonClass} ${index === 1 ? 'my-8' : ''}`}
+              className={`${buttonClass} ${index === 1 ? 'my-5' : ''}`}
               onClick={async () => await navigate(path)}
             >
               {label}
