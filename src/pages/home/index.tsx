@@ -1,31 +1,49 @@
 import { useNavigate } from 'react-router-dom';
 
+import realTimeImg from '../../assets/real-time.png';
+
 const Home = () => {
   const navigate = useNavigate();
 
+  const buttonClass = `
+    bg-gradient-to-r from-red-700 to-red-800 
+    text-white font-semibold tracking-wide
+    py-3 px-6 rounded-[12px] w-full
+    shadow-lg hover:shadow-2xl
+    transition-all duration-300 ease-in-out
+    hover:from-red-600 hover:to-red-700
+    active:scale-95
+  `;
+
+  const buttons = [
+    { label: 'API Polling', path: '/polling' },
+    { label: 'Web Socket', path: '/web-socket' },
+    { label: 'Server Sent Events', path: '/server-sent' },
+  ];
+
   return (
-    <div className='h-screen w-screen flex items-center justify-center bg-black-400'>
-      <div className='bg-white rounded-xl shadow-md p-10 text-center space-y-6'>
-        <h1 className='text-4xl font-bold text-gray-800'>📊 Welcome to the Real Time Session</h1>
-        <div className='flex gap-4'>
-          <button
-            className='bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600'
-            onClick={async () => await navigate('/polling')}
-          >
-            Go to Polling Page
-          </button>
-          <button
-            className='bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600'
-            onClick={async () => await navigate('/web-socket')}
-          >
-            Go to WebSocket Page
-          </button>
-          <button
-            className='bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600'
-            onClick={async () => await navigate('/server-sent')}
-          >
-            Go to Server Sent Page
-          </button>
+    <div className='h-screen w-screen flex bg-[#FFF8E8]'>
+      {/* Image Section */}
+      <div className='w-3/4 h-full flex justify-center items-center'>
+        <img src={realTimeImg} alt='Real Time' className='h-full w-full object-contain' />
+      </div>
+
+      {/* Sidebar Section */}
+      <div className='w-1/4 h-full flex flex-col items-center bg-[#FFF8E8]'>
+        <h1 className='text-2xl font-bold text-black text-center mt-[250px] mb-8'>
+          Real Time Communication Approaches
+        </h1>
+
+        <div className='flex flex-col gap-6 w-56 mt-6'>
+          {buttons.map(({ label, path }, index) => (
+            <button
+              key={path}
+              className={`${buttonClass} ${index === 1 ? 'my-5' : ''}`}
+              onClick={async () => await navigate(path)}
+            >
+              {label}
+            </button>
+          ))}
         </div>
       </div>
     </div>
