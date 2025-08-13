@@ -6,13 +6,13 @@ const Home = () => {
   const navigate = useNavigate();
 
   const buttonClass = `
-    bg-gradient-to-r from-red-700 to-red-800 
-    text-white font-semibold tracking-wide
-    py-3 px-6 rounded-[12px] w-full
-    shadow-lg hover:shadow-2xl
+    bg-gradient-to-r from-white to-white 
+    text-black font-semibold tracking-wide
+    py-3 px-6 rounded-lg
     transition-all duration-300 ease-in-out
-    hover:from-red-600 hover:to-red-700
+    hover:from-white-600 hover:to-white-700
     active:scale-95
+    my-[20%]
   `;
 
   const buttons = [
@@ -23,28 +23,24 @@ const Home = () => {
 
   return (
     <div className='h-screen w-screen flex bg-[#FFF8E8]'>
+      {/* Sidebar Section */}
+      <div className='w-1/4 h-full flex flex-col items-center p-6 border-gray-200 bg-[#613824de]'>
+        <div className='p-6 w-full flex flex-col items-center transition-shadow duration-300'>
+          <h1 className='text-xl font-bold text-white-800 text-center mb-6'>
+            Real Time Communication Approaches
+          </h1>
+          <div className='flex flex-col gap-6 w-full'>
+            {buttons.map(({ label, path }) => (
+              <button key={path} className={buttonClass} onClick={async () => await navigate(path)}>
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
       {/* Image Section */}
       <div className='w-3/4 h-full flex justify-center items-center'>
         <img src={realTimeImg} alt='Real Time' className='h-full w-full object-contain' />
-      </div>
-
-      {/* Sidebar Section */}
-      <div className='w-1/4 h-full flex flex-col items-center bg-[#FFF8E8]'>
-        <h1 className='text-2xl font-bold text-black text-center mt-[250px] mb-8'>
-          Real Time Communication Approaches
-        </h1>
-
-        <div className='flex flex-col gap-6 w-56 mt-6'>
-          {buttons.map(({ label, path }, index) => (
-            <button
-              key={path}
-              className={`${buttonClass} ${index === 1 ? 'my-5' : ''}`}
-              onClick={async () => await navigate(path)}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
       </div>
     </div>
   );
